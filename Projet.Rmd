@@ -13,37 +13,49 @@ library(readr)
 data=read.csv("champions.csv",sep=';',row.names=1)
 data$CLASS=as.factor(data$CLASS)
 data$POSITION=as.factor(data$POSITION)
-data$X.AS=parse_number(data$X.AS)
+data$X.AS=parse_number(data$X.AS)*0.01
 print(data)
 ```
 
-
+#ACP
 ```{r}
-data2=data[,-c(14)]
-print(data2)
+data_class=data[,-c(14)]
 library(FactoMineR)
-res=PCA(data2,quali.sup=c(13),graph=F)
-plot(res,choix="ind",habillage=13,select="cos2 0.8")
+res=PCA(data_class,quali.sup=c(13),graph=F)
+plot(res,choix="var")
 ```
+On a la variable Range(Portée d'attaque), AD(dégats d'attaque) et +MR(augmentation de la résistance magique par niveau) qui ont l'air d'être bien représenté
+L'axe 1 va donc opposer les champions/personnages ceux avec une portée d'attaque élevée et ceux avec une portée d'attaque faible
 
+On voit que les corrélations des variables avec l'axe 2 sont un peu moins forte, car cet axe de variabilité est moins important
 
 
 ```{r}
-
-data$X.AS=parse_number(data$X.AS)
-data1=data[,-c(2,4,6,8,10)]
+plot(res,choix="ind",habillage=13,select="cos2 0.8",cex=0.9)
+```
+```{r}
 print(data)
-print(data1)
-table(data1$CLASS)
-head(data1)
+data[c(7,120,115,104,62,43,103,155,115),c(3,4,10,12,13)]
+```
 
-data2=data1[,-c(8)]
-library(FactoMineR)
-res=PCA(data2,quali.sup=c(8),graph=F)
-plot(res,choix="ind",habillage=8,select="cos2 0.8")
+
+
+```{r}
+barplot(res$eig[,2])
+res$eig   
 ```
 ```{r}
-data3=data1[,-c(8)]
-res=PCA(data3,quali.sup=c(8))
+data_position=data[,-c(13)]
+res2=PCA(data_position,quali.sup=c(13),graph=F)
+plot(res2,choix="var")
 ```
+```{r}
+plot(res2,choix="ind",habillage=13,select="cos2 0.8",cex=0.9)
+```
+#Classification non supervisée
+
+```{r}
+
+```
+
 
